@@ -17,7 +17,8 @@ import spring.intro.model.User;
 @PropertySource("classpath:db.properties")
 @ComponentScan(basePackages = {
         "spring.intro.service",
-        "spring.intro.dao"
+        "spring.intro.dao",
+        "spring.intro.controllers"
 })
 public class AppConfig {
 

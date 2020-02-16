@@ -2,8 +2,6 @@ package spring.intro.dao.impl;
 
 import java.util.List;
 
-import javax.persistence.TypedQuery;
-
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,9 +20,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User get(Long id) {
+        return sessionFactory.openSession().get(User.class, id);
+    }
+
+    @Override
     public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.openSession()
-                .createQuery("From User", User.class);
-        return query.getResultList();
+        return sessionFactory.openSession().createQuery("from User", User.class).list();
     }
 }
