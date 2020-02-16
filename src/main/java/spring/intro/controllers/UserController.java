@@ -4,20 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import spring.intro.dto.UserResponseDto;
 import spring.intro.model.User;
 import spring.intro.service.UserService;
 
-@Controller
+@RestController
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @ResponseBody
     @GetMapping("user/inject")
     public void injectToDB() {
         User user = new User();
@@ -42,7 +40,6 @@ public class UserController {
         userService.add(user);
     }
 
-    @ResponseBody
     @GetMapping("user/")
     public List<UserResponseDto> getAll() {
         List<UserResponseDto> allUsers = new ArrayList<>();
