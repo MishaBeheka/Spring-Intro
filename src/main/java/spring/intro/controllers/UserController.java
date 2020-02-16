@@ -5,18 +5,21 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.intro.dto.UserResponseDto;
 import spring.intro.model.User;
 import spring.intro.service.UserService;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("user/inject")
+    @GetMapping("/inject")
     public void injectToDB() {
         User user = new User();
         user.setFirstName("Ivan");
@@ -40,7 +43,7 @@ public class UserController {
         userService.add(user);
     }
 
-    @GetMapping("user/")
+    @GetMapping("/")
     public List<UserResponseDto> getAll() {
         List<UserResponseDto> allUsers = new ArrayList<>();
         for (User user : userService.listUsers()) {
@@ -52,5 +55,16 @@ public class UserController {
             allUsers.add(userDto);
         }
         return allUsers;
+    }
+
+    @RequestMapping("/{id}")
+    public UserResponseDto get(@PathVariable Long id) {
+        UserResponseDto userDto = new UserResponseDto();
+        User user = userService.get(id);
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        return userDto;
     }
 }
