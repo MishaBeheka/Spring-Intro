@@ -1,9 +1,13 @@
 package spring.intro.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import spring.intro.dto.UserResponseDto;
 import spring.intro.model.User;
 import spring.intro.service.UserService;
 
@@ -15,7 +19,7 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("user/inject")
-    public void injectToDB(){
+    public void injectToDB() {
         User user = new User();
         user.setFirstName("Ivan");
         user.setLastName("Ivanov");
@@ -36,5 +40,20 @@ public class UserController {
         user.setLastName("Vladimirov");
         user.setEmail("Vladimirovich@gmail.com");
         userService.add(user);
+    }
+
+    @ResponseBody
+    @GetMapping("user/")
+    public List<UserResponseDto> getAll() {
+        List<UserResponseDto> allUsers = new ArrayList<>();
+        for (User user : userService.listUsers()) {
+            UserResponseDto userDto = new UserResponseDto();
+            userDto.setId(user.getId());
+            userDto.setFirstName(user.getFirstName());
+            userDto.setLastName(user.getLastName());
+            userDto.setEmail(user.getEmail());
+            allUsers.add(userDto);
+        }
+        return allUsers;
     }
 }
