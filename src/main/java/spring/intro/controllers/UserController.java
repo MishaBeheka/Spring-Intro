@@ -20,7 +20,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/inject")
-    public void injectToDB() {
+    public void inject() {
         User user = new User();
         user.setFirstName("Ivan");
         user.setLastName("Ivanov");
@@ -47,21 +47,19 @@ public class UserController {
     public List<UserResponseDto> getAll() {
         List<UserResponseDto> allUsers = new ArrayList<>();
         for (User user : userService.listUsers()) {
-            UserResponseDto userDto = new UserResponseDto();
-            userDto.setId(user.getId());
-            userDto.setFirstName(user.getFirstName());
-            userDto.setLastName(user.getLastName());
-            userDto.setEmail(user.getEmail());
-            allUsers.add(userDto);
+            allUsers.add(getUserDto(user));
         }
         return allUsers;
     }
 
     @RequestMapping("/{id}")
     public UserResponseDto get(@PathVariable Long id) {
-        UserResponseDto userDto = new UserResponseDto();
         User user = userService.get(id);
-        userDto.setId(user.getId());
+        return getUserDto(user);
+    }
+
+    private UserResponseDto getUserDto(User user) {
+        UserResponseDto userDto = new UserResponseDto();
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
